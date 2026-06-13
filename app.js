@@ -20,6 +20,7 @@ const storage = getStorage(app);
 const canvas = document.getElementById('drawingBoard');
 const ctx = canvas.getContext('2d');
 const clearBtn = document.getElementById('clearBtn');
+const saveBtn = document.getElementById('saveBtn');
 
 // 2. Setup drawing variables
 let isDrawing = false;
@@ -63,4 +64,42 @@ canvas.addEventListener('mouseout', stopDrawing); // Stop if they drag outside t
 // 5. Clear Button Logic
 clearBtn.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+// 6. Save Button Logic
+saveBtn.addEventListener('click', async () => {
+    saveBtn.innerText = "Saving...";
+    saveBtn.disabled = true;
+
+    // Convert the canvas image to a file (blob)
+    canvas.toBlob(async (blob) => {
+        try {
+            // Create a unique filename based on the current time
+            const filename = `drawing_${Date.now()}.png`;
+            const storageRef = ref(storage, `gallery/${filename}`);
+            
+            // Upload the file to Cloud Storage
+            await uploadBytes(storageRef, blob);
+
+            // Get the public URL of the uploaded image
+            const downloadURL = await getDownloadURL(storageRef);
+
+            // Save this URL to the database (Firestore)
+            await addDoc(collection(db, "artworks"), {
+                imageUrl: downloadURL,
+                timestamp: new Date()
+            });
+
+            // Return the button to its normal state
+            saveBtn.innerText = "Saved!";
+            setTimeout(() => {
+                saveBtn.innerText = "Save to Firebase";
+                saveBtn.disabled = false;
+            }, 2000);
+
+        } catch (error) {
+            console.error("Error saving:", error);
+            saveBtn.innerText = "Error! Check the console.";
+        }
+    }, 'image/png'); // We want .png
 });
