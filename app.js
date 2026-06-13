@@ -1,4 +1,5 @@
 // 0. Firebase import
+import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
@@ -66,6 +67,26 @@ clearBtn.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
+
+const colorPicker = document.getElementById('colorPicker');
+const brushSize = document.getElementById('brushSize');
+const eraserBtn = document.getElementById('eraserBtn');
+
+
+colorPicker.addEventListener('input', (e) => {
+    ctx.strokeStyle = e.target.value;
+});
+
+
+brushSize.addEventListener('input', (e) => {
+    ctx.lineWidth = e.target.value;
+});
+
+
+eraserBtn.addEventListener('click', () => {
+    ctx.strokeStyle = '#FFFFFF';
+});
+
 // 6. Save Button Logic
 saveBtn.addEventListener('click', async () => {
     saveBtn.innerText = "Saving...";
@@ -103,3 +124,63 @@ saveBtn.addEventListener('click', async () => {
         }
     }, 'image/png'); // We want .png
 });
+
+
+const exportPngBtn = document.getElementById('exportPngBtn');
+const exportPdfBtn = document.getElementById('exportPdfBtn');
+
+exportPngBtn.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'my-hackathon-art.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+});
+
+
+exportPdfBtn.addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+    });
+    
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    doc.save('my-hackathon-art.pdf');
+});
+
+const galleryContainer = document.getElementById('galleryContainer');
+
+async function loadGallery() {
+    galleryContainer.innerHTML = '<p>Загрузка галереи...</p>';
+    
+    try {
+        const q = query(collection(db, "artworks"), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        galleryContainer.innerHTML = ''; 
+        
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const img = document.createElement('img');
+            img.src = data.imageUrl;
+            img.crossOrigin = "Anonymous";
+            
+
+            img.addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); 
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height); 
+            });
+            
+            galleryContainer.appendChild(img);
+        });
+    } catch (error) {
+        console.error("Ошибка загрузки галереи:", error);
+        galleryContainer.innerHTML = '<p>Ошибка загрузки галереи.</p>';
+    }
+}
+
+
+loadGallery();
