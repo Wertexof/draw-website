@@ -1,3 +1,21 @@
+// 0. Firebase import
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyByIKx3kYZXZTafp-K8-AuVoNYeI7A33NY",
+  authDomain: "nurik-hackathon-june-202-13171.firebaseapp.com",
+  projectId: "nurik-hackathon-june-202-13171",
+  storageBucket: "nurik-hackathon-june-202-13171.firebasestorage.app",
+  messagingSenderId: "779730032331",
+  appId: "1:779730032331:web:52e99a230f74f076502d4e"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
 // 1. Grab the HTML elements
 const canvas = document.getElementById('drawingBoard');
 const ctx = canvas.getContext('2d');
