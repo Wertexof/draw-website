@@ -1,0 +1,22 @@
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.app-container {
+    text-align: center;
+}
+
+.toolbar {
+    margin-bottom: 10px;
+}
+
+canvas {
+    background-color: white;
+    border: 2px solid #333;
+    cursor: crosshair;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
