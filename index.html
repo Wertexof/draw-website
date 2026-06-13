@@ -12,11 +12,23 @@
         <h1>Hackathon Canvas</h1>
         
         <div class="toolbar">
+            <input type="color" id="colorPicker" value="#000000">
+            <input type="range" id="brushSize" min="1" max="50" value="5">
+            <button id="eraserBtn">Eraser</button>
             <button id="clearBtn">Clear</button>
-            <button id="saveBtn">Save to Firebase</button>
+
+            <button id="saveBtn">Save to Cloud</button>
+            <button id="exportPngBtn">Export PNG</button>
+            <button id="exportPdfBtn">Export PDF</button>
         </div>
 
         <canvas id="drawingBoard" width="600" height="400"></canvas>
+        <div class="gallery-section">
+            <h2>Community Gallery</h2>
+            <p>Click any image to load it back onto the canvas!</p>
+            
+            <div id="galleryContainer" class="gallery-grid"></div>
+        </div>
     </div>
 
     <script type="module" src="app.js"></script>

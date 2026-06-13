@@ -20,3 +20,49 @@ canvas {
     cursor: crosshair;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+
+
+/* Add this to your existing CSS */
+
+.toolbar {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+button, input {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.gallery-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #ccc;
+}
+
+/* This creates a beautiful, automatically wrapping grid for the images */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Style the images once they are injected */
+.gallery-grid img {
+    width: 100%;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.05);
+    border-color: #007bff;
+}
