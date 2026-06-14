@@ -177,7 +177,7 @@ async function loadGallery() {
         });
     } catch (error) {
         console.error("Ошибка загрузки галереи:", error);
-        galleryContainer.innerHTML = '<p>Ошибка загрузки галереи.</p>';
+        galleryContainer.innerHTML = '<p>Error loading Gallery.</p>';
     }
 }
 
