@@ -153,7 +153,7 @@ exportPdfBtn.addEventListener('click', () => {
 const galleryContainer = document.getElementById('galleryContainer');
 
 async function loadGallery() {
-    galleryContainer.innerHTML = '<p>Загрузка галереи...</p>';
+    galleryContainer.innerHTML = '<p>Loading Gallery</p>';
     
     try {
         const q = query(collection(db, "artworks"), orderBy("timestamp", "desc"));
